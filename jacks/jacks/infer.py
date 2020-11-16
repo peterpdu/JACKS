@@ -5,7 +5,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] %(name)-5s: %(levelname)-8s %(message)s')
 LOG = logging.getLogger("jacks")
-LOG.setLevel(logging.DEBUG)
+LOG.setLevel(logging.INFO)
 
 """ Main function from which to compute JACKS across a set of specified genes
 @param gene_index {gene: [list of row indexes for the gRNAs for that gene in the testdata]}

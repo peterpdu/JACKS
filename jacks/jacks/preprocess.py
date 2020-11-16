@@ -62,7 +62,7 @@ def condense_normalised_counts(counts, Iscreens, sample_ids):
     data = np.zeros([counts.shape[0], len(Iscreens), 2]) # mean and variance per gRNA in each sample
     for s, Iscreen in enumerate(Iscreens): # condense to per sample values
         N = len(Iscreen)
-        data[:,s,0] = counts[:,Iscreen].mean(axis=1) # mu_hat
+        data[:,s,0] = np.nanmean(counts[:,Iscreen], axis=1) # mu_hat
         data[:,s,1] = calc_posterior_sd(counts[:,Iscreen]) #sigma_hat
     return data
     
@@ -144,7 +144,7 @@ def loadDataAndPreprocess(sample_spec, gene_spec, ctrl_spec={}, ctrl_geneset=set
             if row[sgrna_col] not in gene_spec: 
                 #LOG.warning('No gene mapping found for %s (from file %s)' % (row[sgrna_col],filename))
                 continue    #Ignore entries with no gene mapping
-            counts.append([np.log2(eval(row[colname])+prior) for sample_id, colname in sample_spec[filename]])
+            counts.append([np.log2(int(row[colname])+prior) if row[colname] != '' else np.nan for sample_id, colname in sample_spec[filename]])
             meta.append([row[sgrna_col], gene_spec[row[sgrna_col]]])
         f.close()  
         counts = np.array(counts)
